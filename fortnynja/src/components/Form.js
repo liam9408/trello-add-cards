@@ -14,6 +14,7 @@ class Form extends React.Component {
       pos: "",
       allMembers: [],
       selectedMembers: [],
+      searchMembers: [],
     };
     this.haveLabel = false;
     this.haveDueDate = false;
@@ -22,6 +23,9 @@ class Form extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRadioChange = this.handleRadioChange.bind(this);
     this.createCard = this.createCard.bind(this);
+    this.search = this.search.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   componentDidMount() {
@@ -32,6 +36,29 @@ class Form extends React.Component {
       .then((response) => {
         this.setState({ allMembers: response.data });
       });
+  }
+
+  search(param) {
+    var arr = [...this.state.allMembers];
+
+    var data = arr.filter(function (item) {
+      return item.fullName.includes(param);
+    });
+
+    this.setState({ searchMembers: data });
+  }
+
+  reset() {
+    this.setState({ searchMembers: [] });
+  }
+
+  handleSearchChange(event) {
+    if (event.target.value.length > 0) {
+      this.search(event.target.value);
+    }
+    if (event.target.value.length === 0) {
+      this.setState({ searchMembers: [] });
+    }
   }
 
   handleChange(event) {
@@ -182,6 +209,39 @@ class Form extends React.Component {
             </label>
             <label className="form-labels">
               <h5>Add members:</h5>
+              <p>(max. 50 characters)</p>
+              <div className="input-body">
+                <input
+                  className="input-textfield"
+                  id="search-bar"
+                  type="text"
+                  name="title"
+                  maxlength="50"
+                  onChange={this.handleSearchChange}
+                />
+                <h4>Current Members:</h4>
+                {this.state.searchMembers.map((item, index) => {
+                  return (
+                    <>
+                      <div className="radio" key={index}>
+                        <label>
+                          <input
+                            className="radio-options"
+                            type="radio"
+                            value={item.id}
+                            name={"radio" + index}
+                            onChange={this.handleRadioChange}
+                          />
+                          <h4 className="radio-text">{item.fullName}</h4>
+                        </label>
+                      </div>
+                    </>
+                  );
+                })}
+              </div>
+            </label>
+            {/* <label className="form-labels">
+              <h5>Add members:</h5>
               <p>(Who should be on this task?)</p>
               {this.state.allMembers.map((item, index) => {
                 return (
@@ -199,7 +259,7 @@ class Form extends React.Component {
                   </div>
                 );
               })}
-            </label>
+            </label> */}
             <input
               id={
                 !isEnabled ? "submit-button-disabled" : "submit-button-enabled"
