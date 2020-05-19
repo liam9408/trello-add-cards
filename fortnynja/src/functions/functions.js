@@ -35,7 +35,7 @@ export function getCards() {
       `https://api.trello.com/1/lists/${process.env.REACT_APP_TODO_ID}/cards?&key=${process.env.REACT_APP_API_KEY}&token=${process.env.REACT_APP_API_TOKEN}`
     )
     .then(function (response) {
-      // console.log(response.data);
+      console.log(response.data);
       // for (let i of response.data) {
       //   console.log(i.id);
       //   deleteCard(i.id);

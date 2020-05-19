@@ -270,6 +270,7 @@ class Form extends React.Component {
                   return (
                     <>
                       <div className="current-members-flex">
+                        <p className="radio-text">{item.fullName}</p>
                         <button
                           type="button"
                           className="current-members-button"
@@ -277,9 +278,8 @@ class Form extends React.Component {
                           name={item.fullName}
                           onClick={this.removeCurrent}
                         >
-                          x
+                          remove
                         </button>
-                        <p className="radio-text">{item.fullName}</p>
                       </div>
                     </>
                   );

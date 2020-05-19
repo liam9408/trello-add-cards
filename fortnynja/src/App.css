@@ -144,6 +144,7 @@ select {
   display: flex;
   flex-direction: row;
   margin-top: 10px;
+  align-items: center;
 }
 
 .current-members-button {
@@ -152,9 +153,13 @@ select {
   /* border-radius: 20%; */
   margin-right: 10px;
   font-size: 10px;
+  border: none;
+  background-color: white;
+  color: red;
 }
 .radio-text {
   font-size: 15px;
+  margin-bottom: 0px !important;
 }
 
 #submit-button-enabled {
