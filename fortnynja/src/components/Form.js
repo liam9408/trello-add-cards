@@ -240,7 +240,7 @@ class Form extends React.Component {
             </label>
             <label className="form-labels">
               <h5>Add members:</h5>
-              <p>(max. 50 characters)</p>
+              <p>(Who should be on this team?)</p>
               <div className="input-body-search">
                 <input
                   className="input-textfield"
