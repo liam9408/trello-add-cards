@@ -26,6 +26,7 @@ class Form extends React.Component {
     this.search = this.search.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.reset = this.reset.bind(this);
+    this.removeCurrent = this.removeCurrent.bind(this);
   }
 
   componentDidMount() {
@@ -68,20 +69,45 @@ class Form extends React.Component {
     this.setState({ [name]: val });
   }
 
+  // todo make sure calling api works and the else statement also works for deleting
+
   handleRadioChange(event) {
+    console.log("clicked");
+    event.preventDefault();
     var memberId = event.target.value;
-    console.log(memberId);
-    console.log(event.target.checked);
-    if (!this.state.selectedMembers.includes(memberId)) {
-      this.state.selectedMembers.push(memberId);
-    } else {
-      var arr = [...this.state.selectedMembers];
-      var index = arr.indexOf(memberId);
-      if (index > -1) {
-        arr.splice(index, 1);
-      }
-      this.setState({ selectedMembers: arr });
+    var name = event.target.name;
+    var arr = [...this.state.selectedMembers];
+    console.log(name, memberId);
+    if (arr.length === 0) {
+      arr.push({ fullName: name, id: memberId });
     }
+    if (arr.length > 0) {
+      for (let i of arr) {
+        console.log(i);
+        if (i.id.includes(memberId) === false) {
+          console.log("added");
+          arr.push({ fullName: name, id: memberId });
+        } else {
+        }
+      }
+    }
+    this.setState({ selectedMembers: arr });
+    console.log(this.state.selectedMembers, "selected members state");
+  }
+
+  removeCurrent(event) {
+    var memberId = event.target.value;
+    var arr = [...this.state.selectedMembers];
+    for (let i of arr) {
+      if (i.id.includes(memberId)) {
+        var index = arr.indexOf(i);
+        if (index > -1) {
+          arr.splice(index, 1);
+        }
+        this.setState({ selectedMembers: arr });
+      }
+    }
+    console.log(this.state.selectedMembers);
   }
 
   handleSubmit(event) {
@@ -111,10 +137,14 @@ class Form extends React.Component {
     var description = this.state.description;
     var label = this.state.label;
     var pos = this.state.pos;
-    var members = this.state.selectedMembers;
+    var membersArr = [...this.state.selectedMembers];
+    var members = [];
     console.log(members);
     console.log(label);
 
+    for (let i of membersArr) {
+      members.push(i.id);
+    }
     // we will use the below route if there are no due date
     if (this.haveLabel === true && this.haveDueDate === false) {
       this.functions.createCardsWithOnlyLabel(
@@ -210,7 +240,7 @@ class Form extends React.Component {
             <label className="form-labels">
               <h5>Add members:</h5>
               <p>(max. 50 characters)</p>
-              <div className="input-body">
+              <div className="input-body-search">
                 <input
                   className="input-textfield"
                   id="search-bar"
@@ -219,47 +249,43 @@ class Form extends React.Component {
                   maxlength="50"
                   onChange={this.handleSearchChange}
                 />
-                <h4>Current Members:</h4>
                 {this.state.searchMembers.map((item, index) => {
                   return (
                     <>
-                      <div className="radio" key={index}>
-                        <label>
-                          <input
-                            className="radio-options"
-                            type="radio"
-                            value={item.id}
-                            name={"radio" + index}
-                            onChange={this.handleRadioChange}
-                          />
-                          <h4 className="radio-text">{item.fullName}</h4>
-                        </label>
+                      <button
+                        className="button-options"
+                        type="button"
+                        value={item.id}
+                        name={item.fullName}
+                        onClick={this.handleRadioChange}
+                      >
+                        {item.fullName}
+                      </button>
+                    </>
+                  );
+                })}
+                <h5>Current Members:</h5>
+                {this.state.selectedMembers.map((item, index) => {
+                  console.log(item, "these are the members");
+                  return (
+                    <>
+                      <div className="current-members-flex">
+                        <button
+                          type="button"
+                          className="current-members-button"
+                          value={item.id}
+                          name={item.fullName}
+                          onClick={this.removeCurrent}
+                        >
+                          x
+                        </button>
+                        <p className="radio-text">{item.fullName}</p>
                       </div>
                     </>
                   );
                 })}
               </div>
             </label>
-            {/* <label className="form-labels">
-              <h5>Add members:</h5>
-              <p>(Who should be on this task?)</p>
-              {this.state.allMembers.map((item, index) => {
-                return (
-                  <div className="radio">
-                    <label>
-                      <input
-                        className="radio-options"
-                        type="radio"
-                        value={item.id}
-                        name={"radio" + index}
-                        onChange={this.handleRadioChange}
-                      />
-                      <h4 className="radio-text">{item.fullName}</h4>
-                    </label>
-                  </div>
-                );
-              })}
-            </label> */}
             <input
               id={
                 !isEnabled ? "submit-button-disabled" : "submit-button-enabled"

@@ -104,6 +104,13 @@ select {
   align-items: flex-end;
 }
 
+.input-body-search {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
 .remaining-characters-tag {
   color: grey;
   margin-top: 10px;
@@ -113,10 +120,39 @@ select {
   display: flex;
   flex-direction: row;
 }
-.radio-options {
-  font-size: 10px;
+
+.button-options {
+  font-size: 15px;
+  width: auto;
+  height: 40px;
+  margin-top: 25px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: rgb(230, 230, 230);
+  border: none;
+  border-radius: 25px;
+  -webkit-box-shadow: 10px 10px 25px -19px rgba(0, 0, 0, 0.86);
+  -moz-box-shadow: 10px 10px 25px -19px rgba(0, 0, 0, 0.86);
+  box-shadow: 10px 10px 25px -19px rgba(0, 0, 0, 0.86);
 }
 
+.button-options:hover {
+  background-color: rgb(206, 206, 206);
+}
+
+.current-members-flex {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.current-members-button {
+  width: 10px;
+  height: 10px;
+  /* border-radius: 20%; */
+  margin-right: 10px;
+  font-size: 10px;
+}
 .radio-text {
   font-size: 15px;
 }
