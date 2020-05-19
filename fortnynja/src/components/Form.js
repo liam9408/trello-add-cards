@@ -40,10 +40,11 @@ class Form extends React.Component {
   }
 
   search(param) {
+    var loparam = param.toLowerCase();
     var arr = [...this.state.allMembers];
 
     var data = arr.filter(function (item) {
-      return item.fullName.includes(param);
+      return item.fullName.toLowerCase().includes(loparam);
     });
 
     this.setState({ searchMembers: data });
